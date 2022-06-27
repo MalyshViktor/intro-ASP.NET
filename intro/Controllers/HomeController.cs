@@ -38,6 +38,7 @@ namespace intro.Controllers
             ViewData["dt"] = _dateTime.date("dd:mm:yyyy");
             ViewData["tm"] = _dateTime.time("HH:MM::SS");
             ViewData["UsersCount"] = _introContext.Users.Count();
+            ViewBag.RealName = _introContext.Users.Select(x => x.RealName).ToList();
             return View();
         }
 
@@ -64,6 +65,54 @@ namespace intro.Controllers
                 Name = "Rozetka LLC"
             };
             return View(contacts);
+        }
+
+        public ViewResult Register()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+       
+        public IActionResult RegUser(Models.RegUserModel UserData)
+        {
+            //return Json(UserData); способ проверить передачу данных
+            String [] err = new String[6];
+            if (UserData == null)
+            {
+                err[0] = ("Нет данных");
+            }
+            else {
+                if (String.IsNullOrEmpty(UserData.RealName))
+                {
+                    err[1] = ("Имя не может быть пустым");
+                }
+                if (String.IsNullOrEmpty(UserData.Login))
+                {
+                    err[2] = ("Логин не может быть пустым");
+                }
+                if (String.IsNullOrEmpty(UserData.Email))
+                {
+                    err[5] = ("Email не может быть пустым");
+                }
+                if (String.IsNullOrEmpty(UserData.Password1))
+                {
+                    err[3] = ("Пароль не может быть пустым");
+                }
+                if (UserData.Password1 != UserData.Password2)
+                {
+                    err[4] = ("Пароль должен совпадать");
+                }
+            }
+            UserData.Equals(err);
+            ViewData["err"] = err;
+            return View("Register");
+        }
+    
+        public IActionResult Data()
+        {
+            return Json(new { field = "value" });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
