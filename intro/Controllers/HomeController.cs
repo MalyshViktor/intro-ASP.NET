@@ -1,4 +1,5 @@
 ﻿using intro.Models;
+using intro.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,14 +13,31 @@ namespace intro.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly RandomService _randomService;
+        private readonly IHasher _hasher;
+        private readonly IDateTime _dateTime;
+        private readonly DAL.Context.IntroContext _introContext;
+        public HomeController(ILogger<HomeController> logger,  //Создание зависимостей 
+            RandomService randomService,                        //через конструктор
+            IHasher hasher,
+            IDateTime dateTime,
+            DAL.Context.IntroContext introContext)
         {
             _logger = logger;
+            _randomService = randomService;
+            _hasher = hasher;
+            _dateTime = dateTime;
+            _introContext = introContext;
         }
+
 
         public IActionResult Index()
         {
+            ViewData["rnd"] = _randomService.Integer;
+            ViewBag.hash = _hasher.Hash("123");
+            ViewData["dt"] = _dateTime.date("dd:mm:yyyy");
+            ViewData["tm"] = _dateTime.time("HH:MM::SS");
+            ViewData["UsersCount"] = _introContext.Users.Count();
             return View();
         }
 
