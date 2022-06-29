@@ -33,6 +33,7 @@ namespace intro
             services.AddControllersWithViews();
             services.AddSingleton<IHasher, ShaHasher>();
             services.AddSingleton<IDateTime, ToLongTimeFormat>();
+            //services.AddSingleton<IDateTime, ToShortTimeFormat>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

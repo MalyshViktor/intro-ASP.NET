@@ -16,18 +16,21 @@ namespace intro.Controllers
         private readonly RandomService _randomService;
         private readonly IHasher _hasher;
         private readonly IDateTime _dateTime;
+        private readonly IDateTime _ShortDateTime;
         private readonly DAL.Context.IntroContext _introContext;
         public HomeController(ILogger<HomeController> logger,  //Создание зависимостей 
             RandomService randomService,                        //через конструктор
             IHasher hasher,
             IDateTime dateTime,
-            DAL.Context.IntroContext introContext)
+            DAL.Context.IntroContext introContext,
+            IDateTime shortDateTime)
         {
             _logger = logger;
             _randomService = randomService;
             _hasher = hasher;
             _dateTime = dateTime;
             _introContext = introContext;
+            _ShortDateTime = shortDateTime;
         }
 
 
@@ -37,6 +40,8 @@ namespace intro.Controllers
             ViewBag.hash = _hasher.Hash("123");
             ViewData["dt"] = _dateTime.date("dd:mm:yyyy");
             ViewData["tm"] = _dateTime.time("HH:MM::SS");
+            ViewData["dts"] = _ShortDateTime.date("M:d:yyyy");
+            ViewData["tms"] = _ShortDateTime.time("hh:mm");
             ViewData["UsersCount"] = _introContext.Users.Count();
             ViewBag.RealName = _introContext.Users.Select(x => x.RealName).ToList();
             return View();

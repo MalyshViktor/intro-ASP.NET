@@ -12,12 +12,21 @@
 <br></br>
 
 <i>
-   Date: @ViewData["dt"]
+   Date - Long format: @ViewData["dt"]
 </i>
 <br></br>
 
 <i>
-    Time: @ViewData["tm"]
+    Time - Long Format: @ViewData["tm"]
+</i>
+<br></br>
+<i>
+   Date - Short format: @ViewData["dts"]
+</i>
+<br></br>
+
+<i>
+    Time - Short Format: @ViewData["tms"]
 </i>
 <br></br>
 <p>
@@ -25,6 +34,8 @@
 </p>
 <br></br>
 <p>
+    @* Вывод на стартовой странице всех
+ * зарегистрированных пользователей*@
     Users Name: 
     @foreach(var names in ViewBag.RealName)
     {
